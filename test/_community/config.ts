@@ -1,3 +1,4 @@
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { fileURLToPath } from 'node:url'
 import path from 'path'
@@ -19,6 +20,10 @@ export default buildConfigWithDefaults({
       baseDir: path.resolve(dirname),
     },
   },
+  //added this , because local db was not working
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URI || 'mongodb://testdb:password@ip/testdb',
+  }),
   editor: lexicalEditor({}),
   globals: [
     // ...add more globals here

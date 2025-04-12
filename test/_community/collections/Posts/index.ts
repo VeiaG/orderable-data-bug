@@ -9,6 +9,32 @@ export const PostsCollection: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
   },
+  versions: {
+    maxPerDoc: 5,
+    drafts: true,
+  },
+  // orderable: true,
+  access: {
+    read: ({ req }) => {
+      if (req.user) {
+        return true
+      }
+      return {
+        or: [
+          {
+            _status: {
+              equals: 'published',
+            },
+          },
+          {
+            _status: {
+              exists: false,
+            },
+          },
+        ],
+      }
+    },
+  },
   fields: [
     {
       name: 'title',
